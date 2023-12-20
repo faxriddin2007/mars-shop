@@ -5,11 +5,19 @@ user_main_menu = ReplyKeyboardMarkup(
     keyboard=[
         [
             KeyboardButton("➕ Maxsulot qo'shish"),
-            KeyboardButton("🚀 Mahsulotlar")
+            KeyboardButton("🚀 Mahsulotlarim")
         ],
         [
             KeyboardButton("👤 Profil"),
-            KeyboardButton("📞 Aloqa")
+            KeyboardButton("🏪 Mars bozor")
+        ]
+    ], resize_keyboard=True
+)
+
+phone_share = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+        KeyboardButton("📞 Raqamni yuborish", request_contact=True)
         ]
     ], resize_keyboard=True
 )
