@@ -4,7 +4,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 
 from sql.insert import insert_product, insert_user
-from sql.select import get_user
+from sql.select import get_all_products, get_user
 from states import AddProductState, RegisterState
 
 from environs import Env
@@ -115,9 +115,14 @@ async def get_product_price_handler(message: types.Message, state: FSMContext):
 
 @dp.message_handler(text="🚀 Mahsulotlarim")
 async def my_roducts_handler(message: types.Message):
-    text = "Siz xali mahsulot qo'shmagansiz."
-    await message.answer(text=text)
-
+    products = await get_all_products(chat_id=message.chat.id)
+    for product in products:
+        caption = f"""
+Nomi: {product[2]}
+Ma'lumot: {product[3]}
+Narxi: {product[4]}
+"""
+        await message.answer_photo(photo=product[1], caption=caption)
 
 
 @dp.message_handler(text="🏪 Mars bozor")
