@@ -2,14 +2,19 @@ from aiogram import Bot, Dispatcher, executor, types
 from keyboards.default import user_main_menu, phone_share
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
+
 from sql.insert import insert_user
 from sql.select import get_user
-
 from states import RegisterState
 
+from environs import Env
 
-token = "6076964790:AAGIIwBgUIWeWf3sZz87MrB2QaL6OIx1irQ"
-bot = Bot(token)
+env = Env()
+env.read_env()
+
+BOT_TOKEN = env.str("TOKEN")
+
+bot = Bot(token=BOT_TOKEN, proxy="http://proxy.server:3128")
 storage = MemoryStorage()
 dp = Dispatcher(bot=bot, storage=storage)
 
@@ -17,13 +22,13 @@ dp = Dispatcher(bot=bot, storage=storage)
 @dp.message_handler(commands="start")
 async def start_handler(message: types.Message):
     user = await get_user(chat_id=message.chat.id)
-    # if user:
-    #     text = "Xush kelibsiz."
-    #     await message.answer(text=text, reply_markup=user_main_menu)
-    # else:
-    text = f"Assalomu alaykum Ismingizni kiriting"
-    await message.answer(text=text)
-    await RegisterState.name.set()
+    if user:
+        text = "Xush kelibsiz."
+        await message.answer(text=text, reply_markup=user_main_menu)
+    else:
+        text = f"Assalomu alaykum Ismingizni kiriting"
+        await message.answer(text=text)
+        await RegisterState.name.set()
 
 
 @dp.message_handler(state=RegisterState.name)
