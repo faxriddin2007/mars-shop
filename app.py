@@ -104,11 +104,11 @@ async def get_product_description_handler(message: types.Message, state: FSMCont
 @dp.message_handler(state=AddProductState.price)
 async def get_product_price_handler(message: types.Message, state: FSMContext):
     await state.update_data(price=message.text, chat_id=message.chat.id)
-    text = "Mahsulot qo'shildi."
-    await message.answer(text=text)
-
     data = await state.get_data()
+
     await insert_product(data)
+    text = "Mahsulot qo'shildi."
+    await message.answer(text=text, reply_markup=user_main_menu)
     await state.finish()
 
 
