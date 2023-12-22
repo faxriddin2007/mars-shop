@@ -5,7 +5,7 @@ from aiogram.dispatcher import FSMContext
 
 from sql.insert import insert_user
 from sql.select import get_user
-from states import RegisterState
+from states import AddProductState, RegisterState
 
 from environs import Env
 
@@ -74,9 +74,44 @@ async def get_pass_handler(message: types.Message, state: FSMContext):
 async def add_product_handler(message: types.Message):
     text = "Mahsulot malumotlarini kiriting."
     await message.answer(text=text)
+    await AddProductState.photo.set()
 
 
-@dp.message_handler(text="🚀 Mahsulotlar")
+@dp.message_handler(state=AddProductState.photo, content_types=types.ContentType.PHOTO)
+async def get_product_photo_handler(message: types.Message, state: FSMContext):
+    await state.update_data(photo=message.photo[-1].file_id)
+    text = "Mahsulot nomini kiriting."
+    await message.answer(text=text)
+    await AddProductState.name.set()
+
+
+@dp.message_handler(state=AddProductState.name)
+async def get_product_name_handler(message: types.Message, state: FSMContext):
+    await state.update_data(name=message.text)
+    text = "Mahsulot haqida malumot kiriting."
+    await message.answer(text=text)
+    await AddProductState.description.set()
+
+
+@dp.message_handler(state=AddProductState.description)
+async def get_product_description_handler(message: types.Message, state: FSMContext):
+    await state.update_data(description=message.text)
+    text = "Mahsulot narxini kiriting."
+    await message.answer(text=text)
+    await AddProductState.price.set()
+
+
+@dp.message_handler(state=AddProductState.price)
+async def get_product_price_handler(message: types.Message, state: FSMContext):
+    await state.update_data(price=message.text, chat_id=message.chat.id)
+    text = "Mahsulot qo'shildi."
+    await message.answer(text=text)
+    await state.finish()
+
+
+
+
+@dp.message_handler(text="🚀 Mahsulotlarim")
 async def my_roducts_handler(message: types.Message):
     text = "Siz xali mahsulot qo'shmagansiz."
     await message.answer(text=text)
@@ -101,4 +136,4 @@ Username: @{message.from_user.username}
 
 
 if __name__ == "__main__":
-    executor.start_polling(dp, skip_updates=True)
+    executor.start_polling(dp, skip_updates=True)   

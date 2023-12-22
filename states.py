@@ -6,3 +6,10 @@ class RegisterState(StatesGroup):
     phone_number = State()
     modme_id = State()
     modme_pass = State()
+
+
+class AddProductState(StatesGroup):
+    photo = State()
+    name = State()
+    description = State()
+    price = State()
