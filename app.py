@@ -138,7 +138,7 @@ async def profile_handler(message: types.Message, state: FSMContext):
     user = await get_user(chat_id=message.chat.id)
     text = f"""
 👤 Ismingiz: {user[1]}
-📞 Telefon raqamingiz: {user[2]}
+📞 Telefon raqamingiz:  {user[2]}
 🆔 Modme id: {user[3]}
 """
     await message.answer(text=text)
