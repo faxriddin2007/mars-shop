@@ -72,7 +72,7 @@ async def get_pass_handler(message: types.Message, state: FSMContext):
 
 @dp.message_handler(text="➕ Maxsulot qo'shish")
 async def add_product_handler(message: types.Message):
-    text = "Mahsulot malumotlarini kiriting."
+    text = "Mahsulot rasmini kiriting."
     await message.answer(text=text)
     await AddProductState.photo.set()
 
