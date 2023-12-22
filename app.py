@@ -134,8 +134,8 @@ async def support_handler(message: types.Message):
 
 
 @dp.message_handler(text="👤 Profil")
-async def profile_handler(message: types.Message):
-    data = await RegisterState.get_data()
+async def profile_handler(message: types.Message, state: FSMContext):
+    data = await state.get_data()
     await insert_user(data)
     name = data.get('name')
     phone_number = data.get('phone_number')
