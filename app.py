@@ -105,7 +105,6 @@ async def get_product_description_handler(message: types.Message, state: FSMCont
 async def get_product_price_handler(message: types.Message, state: FSMContext):
     await state.update_data(price=message.text, chat_id=message.chat.id)
     data = await state.get_data()
-
     await insert_product(data)
     text = "Mahsulot qo'shildi."
     await message.answer(text=text, reply_markup=user_main_menu)
@@ -118,9 +117,11 @@ async def my_roducts_handler(message: types.Message):
     products = await get_all_products(chat_id=message.chat.id)
     for product in products:
         caption = f"""
-Nomi: {product[2]}
-Ma'lumot: {product[3]}
-Narxi: {product[4]}
+🚀 Nomi: {product[2]}
+
+ℹ️ Ma'lumot: {product[3]}
+
+💸 Narxi: {product[4]}
 """
         await message.answer_photo(photo=product[1], caption=caption)
 
