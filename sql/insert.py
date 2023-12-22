@@ -29,9 +29,9 @@ async def insert_product(data: dict):
     description = data.get('description')
     price = data.get('price')
     chat_id = data.get('chat_id')
-    query = (f"""insert into products ( price, name, photo, description, chat_id)
-             values ({price}, '{name}','{photo}', '{description}', {chat_id})""")
+    query = """INSERT INTO products (price, name, photo, description, chat_id)
+             VALUES (?, ?, ?, ?, ?)"""
 
-    cursor.execute(query).fetchone()
+    cursor.execute(query, (price, name, photo, description, chat_id))
     conn.commit()
     return True

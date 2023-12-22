@@ -135,15 +135,11 @@ async def support_handler(message: types.Message):
 
 @dp.message_handler(text="👤 Profil")
 async def profile_handler(message: types.Message, state: FSMContext):
-    data = await state.get_data()
-    await insert_user(data)
-    name = data.get('name')
-    phone_number = data.get('phone_number')
-    modme_id = data.get('modme_id')
+    user = await get_user(chat_id=message.chat.id)
     text = f"""
-👤 Ismingiz: {name}
-📞 Telefon raqamingiz: {phone_number}
-🆔 Modme id: {modme_id}
+👤 Ismingiz: {user[1]}
+📞 Telefon raqamingiz: {user[2]}
+🆔 Modme id: {user[3]}
 """
     await message.answer(text=text)
 
