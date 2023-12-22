@@ -135,9 +135,15 @@ async def support_handler(message: types.Message):
 
 @dp.message_handler(text="👤 Profil")
 async def profile_handler(message: types.Message):
+    data = await RegisterState.get_data()
+    await insert_user(data)
+    name = data.get('name')
+    phone_number = data.get('phone_number')
+    modme_id = data.get('modme_id')
     text = f"""
-Ismingiz: {message.from_user.first_name}
-Username: @{message.from_user.username}
+👤 Ismingiz: {name}
+📞 Telefon raqamingiz: {phone_number}
+🆔 Modme id: {modme_id}
 """
     await message.answer(text=text)
 
