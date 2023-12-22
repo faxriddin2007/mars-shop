@@ -3,7 +3,7 @@ from keyboards.default import user_main_menu, phone_share
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 
-from sql.insert import insert_user
+from sql.insert import insert_product, insert_user
 from sql.select import get_user
 from states import AddProductState, RegisterState
 
@@ -106,8 +106,10 @@ async def get_product_price_handler(message: types.Message, state: FSMContext):
     await state.update_data(price=message.text, chat_id=message.chat.id)
     text = "Mahsulot qo'shildi."
     await message.answer(text=text)
-    await state.finish()
 
+    data = await state.get_data()
+    await insert_product(data)
+    await state.finish()
 
 
 

@@ -16,3 +16,22 @@ async def insert_user(data: dict):
     cursor.execute(query)
     conn.commit()
     return True
+
+
+
+
+async def insert_product(data: dict):
+    conn = sqlite3.connect('mars.db')
+    cursor = conn.cursor()
+
+    photo = data.get('photo')
+    name = data.get('name')
+    description = data.get('description')
+    price = data.get('price')
+    chat_id = data.get('chat_id')
+    query = (f"""insert into products ( price, name, photo, description, chat_id)
+             values ({price}, '{name}','{photo}', '{description}', {chat_id})""")
+
+    cursor.execute(query)
+    conn.commit()
+    return True
